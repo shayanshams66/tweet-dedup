@@ -4,17 +4,9 @@ import json
 import sys
 import glob
 import time
-# make sure the required argument is supplied
-# required argument is date folder name. This name is used to construct the inner folder name such as
-# tweetdata03/2017-05-02_Disaster/NorthLABB
-#if len(sys.argv) != 2:
-#    print("Too few arguments.")
-#    print("Usage python <script_name> <date_folder_name_string>")
 _decoder = json.JSONDecoder()
 Data_base=sys.argv[1]
 date = sys.argv[2]
-#date=date.replace("-",".")
-#print(date)
 #name of the database
 HOST_NAME = "130.39.92.103"
 HOST_PORT = 27017
@@ -29,16 +21,10 @@ tempCollection = client[DB_NAME][TEMP_COLLECTION_NAME]
 
 # create list of file name for bounding box files
 boundingBoxFileNames = glob.glob("/twit-data/"+date+"/tweetdata*/"+date+"_"+Data_base+"/*BB/*.json")
-#print boundingBoxFileNames
 # to extend this list with more bb use extend:
 # extend adds elements from list2 to list1
 # boundingBoxFileNames.extend(glob.glob(some other path))
-#while(true):
-#  try: 
-#    boundingBoxFileNames.extend(glob.glob("/twit-data/tweetdata*/*/" + date + "_*/*.json"))
-#  except: pass
 nonBoundingBoxFileNames = glob.glob("/twit-data/"+date+"/tweetdata*/"+date+"_"+Data_base+"/Keywords/*.json")
-#print(nonBoundingBoxFileNames)
 i=0
 time1=time.time()
 tempCollection.create_index([('id', pymongo.ASCENDING)], unique=True)
@@ -64,7 +50,6 @@ time2=time.time()
 elapsed=time2-time1
 f.write(("time for importing tweet with BB: %s") %(elapsed)+"\n")
 f.close()
-#tempCollection.create_index([('id', pymongo.ASCENDING)], unique=True)
 i=0
 time1=time1=time.time()
 for nonBoundingBoxFileName in nonBoundingBoxFileNames:
