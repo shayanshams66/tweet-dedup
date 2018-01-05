@@ -28,52 +28,50 @@ nonBoundingBoxFileNames = glob.glob("/twit-data/"+date+"/tweetdata*/"+date+"_"+D
 i=0
 time1=time.time()
 tempCollection.create_index([('id', pymongo.ASCENDING)], unique=True)
-for boundingBoxFileName in boundingBoxFileNames:
+with open("/twit-data/stats_"+date+"_"+Data_base+".txt","w")as f:
+	for boundingBoxFileName in boundingBoxFileNames:
     # open the file for readin
-        h=0
-	boundingBoxFile = open(boundingBoxFileName, 'r')
-    	for line in boundingBoxFile:
+        	h=0
+		boundingBoxFile = open(boundingBoxFileName, 'r')
+    		for line in boundingBoxFile:
         # convert json string into dictionary object
-                try:
-        		newDoc = json.loads(line)
+                	try:
+        			newDoc = json.loads(line)
         # insert the dictionary as new document
-        		tempCollection.insert_one(newDoc)
-                	h+=1
-                	i+=1
-		except pymongo.errors.DuplicateKeyError:
-			pass
-       #tempCollection.create_index([('id', pymongo.ASCENDING)], unique=True)
-	print(("number of imported tweet with BB: %s from file: %s") %(h,boundingBoxFileName)+"\n")
-f=open("/twit-data/stats_"+date+"_"+Data_base+".txt","a+")
-f.write(("total number of imported tweet with BB: %s") %(i)+"\n")
-time2=time.time()
-elapsed=time2-time1
-f.write(("time for importing tweet with BB: %s") %(elapsed)+"\n")
-f.close()
+        			tempCollection.insert_one(newDoc)
+                		h+=1
+                		i+=1
+			except pymongo.errors.DuplicateKeyError:
+				pass
+                print(("number of imported tweet with BB: %s from file: %s") %(h,boundingBoxFileName)+"\n")
+		f.write(("number of imported tweet with BB: %s from file: %s") %(h,boundingBoxFileName)+"\n")
+	f.write(("total number of imported tweet with BB: %s") %(i)+"\n")
+	time2=time.time()
+	elapsed=time2-time1
+	f.write(("time for importing tweet with BB: %s") %(elapsed)+"\n")
 i=0
 time1=time1=time.time()
-for nonBoundingBoxFileName in nonBoundingBoxFileNames:
+with open("/twit-data/stats_"+date+"_"+Data_base+".txt","a")as f:
+	for nonBoundingBoxFileName in nonBoundingBoxFileNames:
     # open file for reading
-    nonBoundingBoxFile = open(nonBoundingBoxFileName, 'r')
-    h=0
-    for line in nonBoundingBoxFile:
-                try:
+    		nonBoundingBoxFile = open(nonBoundingBoxFileName, 'r')
+    		h=0
+    		for line in nonBoundingBoxFile:
+                	try:
             # try to insert each the new document
- 			newDoc = json.loads(line)
-			tempCollection.insert_one(newDoc)
-                        h+=1
-                        i+=1
+ 				newDoc = json.loads(line)
+				tempCollection.insert_one(newDoc)
+                        	h+=1
+                        	i+=1
         # insert failed due to duplicate key error, do nothing.
-        	except pymongo.errors.DuplicateKeyError:
-            		pass
-                #print ("line number: %s" %pos)
-    print(("number of imported tweet with keyword: %s from file: %s") %(h,nonBoundingBoxFileName))
-f=open("/twit-data/stats_"+date+"_"+Data_base+".txt","a+")
-f.write(("total number of imported tweet with Keywords: %s") %(i)+"\n")
-time2=time.time()
-elapsed=time2-time1
-f.write(("time for importing tweet with keywords: %s") %(elapsed)+"\n")
-f.close()
+        		except pymongo.errors.DuplicateKeyError:
+            			pass
+    		print(("number of imported tweet with keyword: %s from file: %s") %(h,nonBoundingBoxFileName))
+		f.write(("number of imported tweet with keyword: %s from file: %s") %(h,nonBoundingBoxFileName))
+	f.write(("total number of imported tweet with Keywords: %s") %(i)+"\n")
+	time2=time.time()
+	elapsed=time2-time1
+	f.write(("time for importing tweet with keywords: %s") %(elapsed)+"\n")
 collectionNames = tempCollection.distinct("collectionType")
 print(collectionNames)
 # 1.for each unique collection name
