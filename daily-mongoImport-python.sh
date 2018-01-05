@@ -1,8 +1,7 @@
 #!/bin/bash
-##Aded by Shayan to import collected tweets every day at 11:59 pm
+##Cron Job Aded by Shayan to import collected tweets every day at 11:59 pm
 DATE=`date +%Y-%m-%d`
 Root=/twit-data
-#DATE=2018-01-02
 ###check if the date-folder exists:
 tmrw_date=$(date --date="${DATE} +1 day" +%Y-%m-%d)
 mkdir $Root/$tmrw_date
