@@ -67,7 +67,7 @@ with open("/twit-data/stats_"+date+"_"+Data_base+".txt","a")as f:
         		except pymongo.errors.DuplicateKeyError:
             			pass
     		print(("number of imported tweet with keyword: %s from file: %s") %(h,nonBoundingBoxFileName))
-		f.write(("number of imported tweet with keyword: %s from file: %s") %(h,nonBoundingBoxFileName))
+		f.write(("number of imported tweet with keyword: %s from file: %s") %(h,nonBoundingBoxFileName)+"\n")
 	f.write(("total number of imported tweet with Keywords: %s") %(i)+"\n")
 	time2=time.time()
 	elapsed=time2-time1
